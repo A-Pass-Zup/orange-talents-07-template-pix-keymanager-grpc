@@ -1,20 +1,37 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "br.com.zupacademy.apass.pixkeymanager";
+option java_package = "br.com.zupacademy.apass.pix.keymanager";
 option java_outer_classname = "PixKeymanager";
 option objc_class_prefix = "HLW";
 
-package br.com.zupacademy.apass.pixkeymanager;
+package br.com.zupacademy.apass.pix.keymanagergrpc;
 
-service PixKeymanagerService {
-  rpc send (PixKeymanagerRequest) returns (PixKeymanagerReply) {}
+service PixKeyManagerService {
+  rpc send (PixKeyRegisterRequest) returns (PixKeyRegisterReply) {}
 }
 
-message PixKeymanagerRequest {
-  string name = 1;
+enum TiposChavePix {
+  TIPO_CHAVE_UNKNOWN = 0;
+  CPF = 1;
+  CELULAR = 2;
+  EMAIL = 3;
+  ALEATORIA = 4;
 }
 
-message PixKeymanagerReply {
+enum TiposConta {
+  TIPO_CONTA_UNKNOWN = 0;
+  CONTA_CORRENTE = 1;
+  CONTA_POUPANCA = 2;
+}
+
+message PixKeyRegisterRequest {
+  string clienteId = 1;
+  TiposChavePix tipoDeChave = 2;
+  string valorChavePix = 3;
+  TiposConta tipoConta = 4;
+}
+
+message PixKeyRegisterReply {
   string message = 1;
 }
