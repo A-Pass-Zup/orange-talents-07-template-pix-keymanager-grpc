@@ -1,3 +1,17 @@
 micronaut:
   application:
     name: pixKeymanager
+
+datasources:
+  default:
+    url: jdbc:postgresql://${DB_HOST:`localhost:5432`}/${DB_NAME:postgres}
+    driverClassName: org.postgresql.Driver
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:0123456789}
+    schema-generate: CREATE_DROP
+    dialect: POSTGRES
+jpa.default.properties.hibernate.hbm2ddl.auto: update
+
+external-service:
+  bcb:
+    base-uri: ${EXTERNAL_SERVICE_BCB_BASE_URI:`localhost:8082/api/v1/pix/keys`}

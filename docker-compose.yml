@@ -12,12 +12,12 @@ services:
     key-manager-db:
         image: 'postgres:9.6-alpine'
         volumes:
-            - key-manger-db-volume:/var/lib/postgresql/data
+            - key-manager-db-volume:/var/lib/postgresql/data
         ports:
             - 5432:5432
         environment:
-            POSTGRES_USER: microservicetransacao
+            POSTGRES_USER: postgres
             POSTGRES_PASSWORD: '0123456789'
 
 volumes:
-    key-manger-db-volume:
+    key-manager-db-volume:

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import jakarta.inject.Inject
 
 @MicronautTest
-class PixKeymanagerTest {
+class ChavePixKeymanagerTest {
 
     @Inject
     lateinit var application: EmbeddedApplication<*>

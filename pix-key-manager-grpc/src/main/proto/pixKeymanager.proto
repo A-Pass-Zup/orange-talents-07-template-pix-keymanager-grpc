@@ -1,17 +1,17 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "br.com.zupacademy.apass.pix.keymanager";
+option java_package = "br.com.zupacademy.apass.pix.keymanager.endpoint";
 option java_outer_classname = "PixKeymanager";
 option objc_class_prefix = "HLW";
 
-package br.com.zupacademy.apass.pix.keymanagergrpc;
+package br.com.zupacademy.apass.pix.keymanagergrpc.endpoint;
 
-service PixKeyManagerService {
-  rpc send (PixKeyRegisterRequest) returns (PixKeyRegisterReply) {}
+service RegistroDeChavePixService {
+  rpc registra (RegistroDeChavePixRequest) returns (RegistroDeChavePixReply) {}
 }
 
-enum TiposChavePix {
+enum TiposDeChavePix {
   TIPO_CHAVE_UNKNOWN = 0;
   CPF = 1;
   CELULAR = 2;
@@ -19,19 +19,19 @@ enum TiposChavePix {
   ALEATORIA = 4;
 }
 
-enum TiposConta {
+enum TiposDeConta {
   TIPO_CONTA_UNKNOWN = 0;
   CONTA_CORRENTE = 1;
   CONTA_POUPANCA = 2;
 }
 
-message PixKeyRegisterRequest {
+message RegistroDeChavePixRequest {
   string clienteId = 1;
-  TiposChavePix tipoDeChave = 2;
+  TiposDeChavePix tipoDeChave = 2;
   string valorChavePix = 3;
-  TiposConta tipoConta = 4;
+  TiposDeConta tipoConta = 4;
 }
 
-message PixKeyRegisterReply {
+message RegistroDeChavePixReply {
   string message = 1;
 }
