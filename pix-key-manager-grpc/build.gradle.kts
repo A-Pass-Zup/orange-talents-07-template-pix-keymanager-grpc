@@ -31,6 +31,8 @@ dependencies {
 
     kapt("io.micronaut:micronaut-http-validation")
 
+    annotationProcessor("io.micronaut:micronaut-validation")
+
     implementation("io.micronaut:micronaut-http-client")
 
     implementation("io.micronaut:micronaut-runtime")
@@ -67,7 +69,7 @@ dependencies {
 
     testImplementation("org.testcontainers:testcontainers")
 
-    //implementation("io.micronaut:micronaut-validation")
+    implementation("io.micronaut:micronaut-validation")
 
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
 

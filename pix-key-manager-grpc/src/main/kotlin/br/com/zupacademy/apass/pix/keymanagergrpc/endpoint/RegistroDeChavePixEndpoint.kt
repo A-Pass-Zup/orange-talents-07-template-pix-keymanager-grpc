@@ -42,7 +42,7 @@ class RegistroDeChavePixEndpoint(val registroDeChavePixRepository: RegistroDeCha
             responseObserver?.onNext(
                     RegistroDeChavePixReply
                             .newBuilder()
-                            .setMessage("Chave PIX cadastrada com sucesso!")
+                            .setMessage("Sucesso!")
                             .build())
 
             responseObserver?.onCompleted()

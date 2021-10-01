@@ -1,6 +1,6 @@
 package br.com.zupacademy.apass.pix.keymanagergrpc.validation
 
-import io.micronaut.validation.validator.constraints.EmailValidator
+import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator
 
 
 class ChaveEmailValidador : ChaveValidator {
