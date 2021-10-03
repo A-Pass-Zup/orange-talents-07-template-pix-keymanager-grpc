@@ -1,8 +1,5 @@
 package br.com.zupacademy.apass.pix.keymanagergrpc.endpoint
 
-import br.com.zupacademy.apass.pix.keymanager.endpoint.RegistroDeChavePixReply
-import br.com.zupacademy.apass.pix.keymanager.endpoint.RegistroDeChavePixRequest
-import br.com.zupacademy.apass.pix.keymanager.endpoint.RegistroDeChavePixServiceGrpc
 import br.com.zupacademy.apass.pix.keymanagergrpc.endpoint.extend.toModel
 import br.com.zupacademy.apass.pix.keymanagergrpc.model.ValorDeChavePixInvalidoException
 import br.com.zupacademy.apass.pix.keymanagergrpc.repository.RegistroDeChavePixRepository

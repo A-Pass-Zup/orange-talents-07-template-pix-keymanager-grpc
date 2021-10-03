@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull
 @Entity
 class RegistroDeChavePix(
         @field:NotBlank
-        val clientId: String,
+        val clienteId: String,
 
         @field:Enumerated(EnumType.STRING)
         @field:NotNull

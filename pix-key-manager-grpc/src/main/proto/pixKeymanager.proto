@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "br.com.zupacademy.apass.pix.keymanager.endpoint";
+option java_package = "br.com.zupacademy.apass.pix.keymanagergrpc.endpoint";
 option java_outer_classname = "PixKeymanager";
 option objc_class_prefix = "HLW";
 
