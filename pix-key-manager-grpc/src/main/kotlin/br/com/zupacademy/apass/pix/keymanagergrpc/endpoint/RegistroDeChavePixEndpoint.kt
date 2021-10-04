@@ -44,17 +44,17 @@ class RegistroDeChavePixEndpoint(val registroDeChavePixRepository: RegistroDeCha
 
             responseObserver?.onCompleted()
 
-        } catch (illegalArgs: IllegalArgumentException) {
-            responseObserver?.onError(
-                    StatusRuntimeException(
-                            Status.INVALID_ARGUMENT
-                                    .augmentDescription(illegalArgs.message)))
-
         } catch (chaveInvalidaExcpetion: ValorDeChavePixInvalidoException) {
             responseObserver?.onError(
                     StatusRuntimeException(
                             Status.INVALID_ARGUMENT
                                     .withDescription(chaveInvalidaExcpetion.message)))
+
+        } catch (illegalArgs: IllegalArgumentException) {
+            responseObserver?.onError(
+                    StatusRuntimeException(
+                            Status.INVALID_ARGUMENT
+                                    .augmentDescription(illegalArgs.message)))
 
         } catch (constraintVioletion: ConstraintViolationException) {
             responseObserver?.onError(
