@@ -11,6 +11,10 @@ service RegistroDeChavePixService {
   rpc registra (RegistroDeChavePixRequest) returns (RegistroDeChavePixReply) {}
 }
 
+service RemocaoDeChavePixService {
+  rpc remove(RemocaoDeChavePixRequest) returns(RemocaoDeChavePixReply) {}
+}
+
 enum TiposDeChavePix {
   TIPO_CHAVE_UNKNOWN = 0;
   CPF = 1;
@@ -33,5 +37,14 @@ message RegistroDeChavePixRequest {
 }
 
 message RegistroDeChavePixReply {
-  string message = 1;
+  string mensagem = 1;
+}
+
+message RemocaoDeChavePixRequest {
+  string clienteId = 1;
+  string chavePixId = 2;
+}
+
+message RemocaoDeChavePixReply {
+  string mensagem = 1;
 }

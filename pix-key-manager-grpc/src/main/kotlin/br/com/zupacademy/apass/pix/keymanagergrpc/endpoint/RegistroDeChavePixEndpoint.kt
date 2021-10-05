@@ -2,7 +2,7 @@ package br.com.zupacademy.apass.pix.keymanagergrpc.endpoint
 
 import br.com.zupacademy.apass.pix.keymanagergrpc.endpoint.extend.toModel
 import br.com.zupacademy.apass.pix.keymanagergrpc.model.ValorDeChavePixInvalidoException
-import br.com.zupacademy.apass.pix.keymanagergrpc.repository.RegistroDeChavePixRepository
+import br.com.zupacademy.apass.pix.keymanagergrpc.repository.ChavePixRepository
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
 import io.grpc.stub.StreamObserver
@@ -10,7 +10,7 @@ import jakarta.inject.Singleton
 import javax.validation.ConstraintViolationException
 
 @Singleton
-class RegistroDeChavePixEndpoint(val registroDeChavePixRepository: RegistroDeChavePixRepository)
+class RegistroDeChavePixEndpoint(val chavePixRepository: ChavePixRepository)
     : RegistroDeChavePixServiceGrpc.RegistroDeChavePixServiceImplBase() {
 
     override fun registra(request: RegistroDeChavePixRequest?, responseObserver: StreamObserver<RegistroDeChavePixReply>?) {
@@ -21,7 +21,7 @@ class RegistroDeChavePixEndpoint(val registroDeChavePixRepository: RegistroDeCha
             return
         }
 
-        if (this.registroDeChavePixRepository
+        if (this.chavePixRepository
                         .existsByValorChave(request.valorChavePix)) {
 
             responseObserver?.onError(StatusRuntimeException(
@@ -33,13 +33,13 @@ class RegistroDeChavePixEndpoint(val registroDeChavePixRepository: RegistroDeCha
         try {
 
             request.toModel().let {
-                this.registroDeChavePixRepository.save(it)
+                this.chavePixRepository.save(it)
             }
 
             responseObserver?.onNext(
                     RegistroDeChavePixReply
                             .newBuilder()
-                            .setMessage("Sucesso!")
+                            .setMensagem("Sucesso!")
                             .build())
 
             responseObserver?.onCompleted()

@@ -1,10 +1,10 @@
 package br.com.zupacademy.apass.pix.keymanagergrpc
 
 import br.com.zupacademy.apass.pix.keymanagergrpc.endpoint.*
-import br.com.zupacademy.apass.pix.keymanagergrpc.model.RegistroDeChavePix
+import br.com.zupacademy.apass.pix.keymanagergrpc.model.ChavePix
 import br.com.zupacademy.apass.pix.keymanagergrpc.model.TiposDeChavePix as TiposDeChavePixModel
 import br.com.zupacademy.apass.pix.keymanagergrpc.model.TiposDeConta as TiposDeContaModel
-import br.com.zupacademy.apass.pix.keymanagergrpc.repository.RegistroDeChavePixRepository
+import br.com.zupacademy.apass.pix.keymanagergrpc.repository.ChavePixRepository
 import io.grpc.ManagedChannel
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
@@ -22,12 +22,12 @@ import java.util.*
 
 @MicronautTest(transactional = false)
 internal class RegistroChavePixEndpointTest(
-        val registroDeChavePixRepository: RegistroDeChavePixRepository,
+        val chavePixRepository: ChavePixRepository,
         val grpcClient: RegistroDeChavePixServiceGrpc.RegistroDeChavePixServiceBlockingStub) {
 
     @BeforeEach
     fun beforeEach() {
-        this.registroDeChavePixRepository.deleteAll()
+        this.chavePixRepository.deleteAll()
     }
 
     @Test
@@ -45,14 +45,14 @@ internal class RegistroChavePixEndpointTest(
                         .build())
 
 
-        assertEquals("Sucesso!", response.message)
-        val salvos = this.registroDeChavePixRepository.findAll();
+        assertEquals("Sucesso!", response.mensagem)
+        val salvos = this.chavePixRepository.findAll();
         assertEquals(1, salvos.size)
         assertNotNull(salvos[0].id)
         assertEquals(clienteId, salvos[0].clienteId)
         assertEquals(TiposDeConta.CONTA_POUPANCA.toModel(), salvos[0].tipoConta)
         assertEquals(TiposDeChavePix.ALEATORIA.toModel(), salvos[0].tipoChavePix)
-        assertEquals("","")
+        assertEquals(false, salvos[0].valorChave.isBlank())
     }
 
     @Test
@@ -67,7 +67,7 @@ internal class RegistroChavePixEndpointTest(
                         .build())
 
 
-        assertEquals(response.message, "Sucesso!")
+        assertEquals("Sucesso!", response.mensagem)
     }
 
     @Test
@@ -81,7 +81,7 @@ internal class RegistroChavePixEndpointTest(
                         .setValorChavePix("user@domio.com")
                         .build())
 
-        assertEquals(response.message, "Sucesso!")
+        assertEquals("Sucesso!", response.mensagem)
     }
 
     @Test
@@ -95,7 +95,7 @@ internal class RegistroChavePixEndpointTest(
                         .setValorChavePix("+5566988887777")
                         .build())
 
-        assertEquals(response.message, "Sucesso!")
+        assertEquals("Sucesso!", response.mensagem)
     }
 
     @Test
@@ -111,14 +111,14 @@ internal class RegistroChavePixEndpointTest(
                             .setValorChavePix(UUID.randomUUID().toString())
                             .build())
         }.let {
-            assertEquals(it.status.code, Status.INVALID_ARGUMENT.code)
+            assertEquals(Status.INVALID_ARGUMENT.code, it.status.code)
         }
     }
 
     @Test
     fun `quando registrar chave cpf invalida deve nao deve cadastrar a chave pix`() {
         assertThrows<StatusRuntimeException> {
-            val response = grpcClient.registra(
+            grpcClient.registra(
                     RegistroDeChavePixRequest
                             .newBuilder()
                             .setClienteId(UUID.randomUUID().toString())
@@ -128,14 +128,14 @@ internal class RegistroChavePixEndpointTest(
                             .build())
 
         }.let {
-            assertEquals(it.status.code, Status.INVALID_ARGUMENT.code)
+            assertEquals(Status.INVALID_ARGUMENT.code, it.status.code)
         }
     }
 
     @Test
     fun `quando registrar chave email invalida nao deve cadastrar a chave pix`() {
         assertThrows<StatusRuntimeException> {
-            val response = grpcClient.registra(
+            grpcClient.registra(
                     RegistroDeChavePixRequest
                             .newBuilder()
                             .setClienteId(UUID.randomUUID().toString())
@@ -144,7 +144,7 @@ internal class RegistroChavePixEndpointTest(
                             .setValorChavePix("user_domio.com")
                             .build())
         }.let {
-            assertEquals(it.status.code, Status.INVALID_ARGUMENT.code)
+            assertEquals(Status.INVALID_ARGUMENT.code, it.status.code)
         }
 
     }
@@ -152,28 +152,28 @@ internal class RegistroChavePixEndpointTest(
     @Test
     fun `quando registrar chave celular invalida nao deve cadastrar a chave pix`() {
         assertThrows<StatusRuntimeException> {
-        val response = grpcClient.registra(
-                RegistroDeChavePixRequest
-                        .newBuilder()
-                        .setClienteId(UUID.randomUUID().toString())
-                        .setTipoConta(TiposDeConta.CONTA_POUPANCA)
-                        .setTipoDeChave(TiposDeChavePix.CELULAR)
-                        .setValorChavePix("66988887777")
-                        .build())
+            grpcClient.registra(
+                    RegistroDeChavePixRequest
+                            .newBuilder()
+                            .setClienteId(UUID.randomUUID().toString())
+                            .setTipoConta(TiposDeConta.CONTA_POUPANCA)
+                            .setTipoDeChave(TiposDeChavePix.CELULAR)
+                            .setValorChavePix("66988887777")
+                            .build())
         }.let {
-            assertEquals(it.status.code, Status.INVALID_ARGUMENT.code)
+            assertEquals(Status.INVALID_ARGUMENT.code, it.status.code)
         }
     }
 
     fun `quando tentar cadastrar uma chave ja existente deve falhar`() {
 
-        val chaveExistente = RegistroDeChavePix(
+        val chaveExistente = ChavePix(
                 clienteId = UUID.randomUUID().toString(),
                 tipoConta = TiposDeContaModel.CONTA_POUPANCA,
                 tipoChavePix = TiposDeChavePixModel.CPF,
                 valorChave = "28125877096")
 
-        this.registroDeChavePixRepository.save(chaveExistente)
+        this.chavePixRepository.save(chaveExistente)
 
         val requisicao = RegistroDeChavePixRequest.newBuilder()
                 .setClienteId(chaveExistente.clienteId)
@@ -185,7 +185,7 @@ internal class RegistroChavePixEndpointTest(
         assertThrows<StatusRuntimeException> {
             this.grpcClient.registra(requisicao)
         }.let {
-            assertEquals(it.status.code, Status.ALREADY_EXISTS.code)
+            assertEquals(Status.ALREADY_EXISTS.code, it.status.code)
         }
     }
 

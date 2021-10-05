@@ -1,11 +1,11 @@
 package br.com.zupacademy.apass.pix.keymanagergrpc.external_service.bcb
 
-import br.com.zupacademy.apass.pix.keymanagergrpc.model.RegistroDeChavePix
+import br.com.zupacademy.apass.pix.keymanagergrpc.model.ChavePix
 import br.com.zupacademy.apass.pix.keymanagergrpc.model.TiposDeChavePix
 
-class CreatePixKeyRequest(registroDeChavePix: RegistroDeChavePix) {
+class CreatePixKeyRequest(chavePix: ChavePix) {
 
-    val keyType: KeyType = registroDeChavePix.tipoChavePix.run {
+    val keyType: KeyType = chavePix.tipoChavePix.run {
         when(this) {
             TiposDeChavePix.CPF -> KeyType.CPF
             TiposDeChavePix.CELULAR -> KeyType.PHONE
@@ -14,6 +14,6 @@ class CreatePixKeyRequest(registroDeChavePix: RegistroDeChavePix) {
         }
     }
 
-    val key = registroDeChavePix.valorChave
+    val key = chavePix.valorChave
 
 }
