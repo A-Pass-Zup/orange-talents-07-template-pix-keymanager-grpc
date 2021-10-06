@@ -6,5 +6,6 @@ import io.micronaut.http.client.annotation.Client
 @Client("\${external-service.bcb.base-uri}")
 interface BcbClient {
 
-    
+    @Post
+    fun registerPixKey()
 }
