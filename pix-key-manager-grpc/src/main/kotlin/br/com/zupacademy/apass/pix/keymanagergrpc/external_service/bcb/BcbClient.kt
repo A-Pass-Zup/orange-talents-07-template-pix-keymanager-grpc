@@ -4,6 +4,7 @@ import io.micronaut.http.annotation.Post
 import io.micronaut.http.client.annotation.Client
 
 @Client("\${external-service.bcb.base-uri}")
-class BcbClient {
+interface BcbClient {
 
+    
 }
