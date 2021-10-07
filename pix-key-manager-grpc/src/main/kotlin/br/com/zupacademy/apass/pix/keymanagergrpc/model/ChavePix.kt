@@ -18,9 +18,7 @@ class ChavePix(
         @field:NotNull
         val tipoChavePix: TiposDeChavePix,
 
-        @field:NotNull
-        @field:Column(unique = true, nullable = false)
-        var valorChave: String
+        valorChave: String? = null
 ) {
     @field:Id
     @field:GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,19 +28,32 @@ class ChavePix(
     @field:Column(nullable = false, unique = true)
     val identificador = UUID.randomUUID()!!
 
+    /**
+     *
+     */
+    @field:NotNull
+    @field:Column(unique = true, nullable = false)
+    var valorChave: String? = valorChave
+        set(value) {
+            assert(this.tipoChavePix == TiposDeChavePix.ALEATORIA && field.isNullOrBlank())
+            { "Só pode alterar valor da chave pix ALEATORIA que não tenha sido definida!" }
+
+            assert(!value.isNullOrBlank())
+            { "Não pode definir um valor de chave PIX nulo ou vázio!" }
+
+            field = value
+        }
+
     init {
         if (this.tipoChavePix == TiposDeChavePix.ALEATORIA) {
             if(!valorChave.isNullOrBlank()) {
                 throw ValorDeChavePixInvalidoException("Chave ALEATORIA não pode ter valor definido!")
             }
-
-            this.valorChave = UUID.randomUUID().toString()
-        }
-
-        // Válida que a chave não será nula
-        tipoChavePix.valida(this.valorChave).let {
-            if (!it.valida) {
-                throw ValorDeChavePixInvalidoException(it.mensagem!!)
+        } else {
+            tipoChavePix.valida(this.valorChave).let {
+                if (!it.valida) {
+                    throw ValorDeChavePixInvalidoException(it.mensagem!!)
+                }
             }
         }
     }

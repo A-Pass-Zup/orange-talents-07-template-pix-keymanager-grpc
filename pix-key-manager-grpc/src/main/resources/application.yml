@@ -4,14 +4,19 @@ micronaut:
 
 datasources:
   default:
-    url: jdbc:postgresql://${DB_HOST:`localhost:5432`}/${DB_NAME:postgres}
+    url: jdbc:postgresql://${DB_HOST}/${DB_NAME}
     driverClassName: org.postgresql.Driver
-    username: ${DB_USER:postgres}
-    password: ${DB_PASSWORD:0123456789}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     schema-generate: CREATE_DROP
     dialect: POSTGRES
 jpa.default.properties.hibernate.hbm2ddl.auto: update
 
 external-service:
   bcb:
-    base-uri: ${EXTERNAL_SERVICE_BCB_BASE_URI:`localhost:8082/api/v1/pix/keys`}
+    base-uri: ${EXTERNAL_SERVICE_BCB_BASE_URI}
+    pix-create-urn: ${EXTERNAL_SERVICE_BCB_PIX_CREATE_URN}
+    pix-delete-urn: ${EXTERNAL_SERVICE_BCB_PIX_DELETE_URN}
+  erp-itau:
+    base-uri: ${EXTERNAL_SERVICE_ERP_ITAU_BASE_URI}
+    consulta-conta-urn: ${EXTERNAL_SERVICE_ERP_ITAU_CONSULTA_CONTA_URN}

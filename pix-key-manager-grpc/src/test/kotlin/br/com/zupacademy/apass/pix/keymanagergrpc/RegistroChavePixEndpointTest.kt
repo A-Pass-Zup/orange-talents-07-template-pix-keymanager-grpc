@@ -52,7 +52,7 @@ internal class RegistroChavePixEndpointTest(
         assertEquals(clienteId, salvos[0].clienteId)
         assertEquals(TiposDeConta.CONTA_POUPANCA.toModel(), salvos[0].tipoConta)
         assertEquals(TiposDeChavePix.ALEATORIA.toModel(), salvos[0].tipoChavePix)
-        assertEquals(false, salvos[0].valorChave.isBlank())
+        assertEquals(false, salvos[0].valorChave.isNullOrBlank())
     }
 
     @Test
